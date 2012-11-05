@@ -19,7 +19,7 @@ my %module_build_args = (
     "Kovensky <diogomfranco\@gmail.com>"
   ],
   "dist_name" => "WWW-Shorten-Akari",
-  "dist_version" => "v0.3.0",
+  "dist_version" => "v1.0.0",
   "license" => "open_source",
   "module_name" => "WWW::Shorten::Akari",
   "recommends" => {},

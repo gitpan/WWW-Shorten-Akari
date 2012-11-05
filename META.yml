@@ -27,4 +27,4 @@ requires:
   strict: 0
   utf8: 0
   warnings: 0
-version: v0.2
+version: v0.2.1

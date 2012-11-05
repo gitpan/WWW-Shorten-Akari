@@ -5,7 +5,7 @@ use utf8;
 
 package WWW::Shorten::Akari;
 {
-  $WWW::Shorten::Akari::VERSION = 'v0.2';
+  $WWW::Shorten::Akari::VERSION = 'v0.2.1';
 }
 # ABSTRACT: Reduces the presence of URLs using http://waa.ai
 
@@ -148,13 +148,13 @@ WWW::Shorten::Akari - Reduces the presence of URLs using http://waa.ai
 
 =head1 VERSION
 
-version v0.2
+version v0.2.1
 
 =head1 SYNOPSIS
 
     use WWW::Shorten::Akari;
 
-    my $presence = WWW::Shorter::Akari->new;
+    my $presence = WWW::Shorten::Akari->new;
     my $short = $presence->reduce("http://google.com");
     my $long  = $presence->increase($short);
 

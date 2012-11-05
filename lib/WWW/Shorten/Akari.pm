@@ -5,7 +5,7 @@ use utf8;
 
 package WWW::Shorten::Akari;
 {
-  $WWW::Shorten::Akari::VERSION = 'v0.2.1';
+  $WWW::Shorten::Akari::VERSION = 'v0.3.0';
 }
 # ABSTRACT: Reduces the presence of URLs using http://waa.ai
 
@@ -148,7 +148,7 @@ WWW::Shorten::Akari - Reduces the presence of URLs using http://waa.ai
 
 =head1 VERSION
 
-version v0.2.1
+version v0.3.0
 
 =head1 SYNOPSIS
 

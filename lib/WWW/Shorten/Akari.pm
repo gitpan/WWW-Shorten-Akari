@@ -5,7 +5,7 @@ use utf8;
 
 package WWW::Shorten::Akari;
 {
-  $WWW::Shorten::Akari::VERSION = 'v1.0.0';
+  $WWW::Shorten::Akari::VERSION = 'v1.1.0';
 }
 # ABSTRACT: Reduces the presence of URLs using http://waa.ai
 
@@ -101,7 +101,16 @@ sub _check_url {
     return scalar $url =~ m{^http://waa\.ai/[^.]+$};
 }
 
+sub lengthen {
+    my ($self, @args) = @_;
+    return $self->increase(@args);
+}
+
+use version;
+croak "Remove the deprecated 'lenghten'"
+    if $WWW::Shorten::Akari::VERSION >= qv('v2.0.0');
 sub lenghten {
+    carp "Don't use lenghten, use lengthen";
     my ($self, @args) = @_;
     return $self->increase(@args);
 }
@@ -148,7 +157,7 @@ WWW::Shorten::Akari - Reduces the presence of URLs using http://waa.ai
 
 =head1 VERSION
 
-version v1.0.0
+version v1.1.0
 
 =head1 SYNOPSIS
 
@@ -191,7 +200,7 @@ On failure, or if C<$url> is false, or if the C<$url> isn't
 a shortened link from L<http://waa.ai>, C<carp>s and returns
 false.
 
-Aliases: C<lenghten>, C<long_link>, C<extract>, C<makealongerlink>
+Aliases: C<lengthen>, C<long_link>, C<extract>, C<makealongerlink>
 
 =head1 NOTES
 
@@ -208,7 +217,9 @@ with ':short', the functions C<short_link> and C<long_link> are imported.
 
 =for Pod::Coverage shorten short_link
 
-=for Pod::Coverage lenghten long_link extract
+=for Pod::Coverage lengthen long_link extract
+
+=for Pod::Coverage lenghten
 
 =head1 FUNCTIONS
 
@@ -239,6 +250,6 @@ This software is Copyright (c) 2012 by Diogo Franco.
 
 This is free software, licensed under:
 
-  The (two-clause) FreeBSD License
+  The MIT (X11) License
 
 =cut

@@ -19,8 +19,8 @@ my %module_build_args = (
     "Kovensky <diogomfranco\@gmail.com>"
   ],
   "dist_name" => "WWW-Shorten-Akari",
-  "dist_version" => "v1.0.0",
-  "license" => "open_source",
+  "dist_version" => "v1.1.0",
+  "license" => "mit",
   "module_name" => "WWW::Shorten::Akari",
   "recommends" => {},
   "recursive_test_files" => 1,
@@ -35,6 +35,7 @@ my %module_build_args = (
     "perl" => "v5.8.0",
     "strict" => 0,
     "utf8" => 0,
+    "version" => 0,
     "warnings" => 0
   },
   "script_files" => []

@@ -1,7 +1,7 @@
 
 
 This archive contains the distribution WWW-Shorten-Akari,
-version v1.0.0:
+version v1.1.0:
 
   Reduces the presence of URLs using http://waa.ai
 
@@ -9,6 +9,6 @@ This software is Copyright (c) 2012 by Diogo Franco.
 
 This is free software, licensed under:
 
-  The (two-clause) FreeBSD License
+  The MIT (X11) License
 
 

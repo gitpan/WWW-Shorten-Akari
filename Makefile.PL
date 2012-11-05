@@ -21,7 +21,7 @@ my %WriteMakefileArgs = (
   },
   "DISTNAME" => "WWW-Shorten-Akari",
   "EXE_FILES" => [],
-  "LICENSE" => "open_source",
+  "LICENSE" => "mit",
   "NAME" => "WWW::Shorten::Akari",
   "PREREQ_PM" => {
     "Carp" => 0,
@@ -33,9 +33,10 @@ my %WriteMakefileArgs = (
     "parent" => 0,
     "strict" => 0,
     "utf8" => 0,
+    "version" => 0,
     "warnings" => 0
   },
-  "VERSION" => "v1.0.0",
+  "VERSION" => "v1.1.0",
   "test" => {
     "TESTS" => "t/*.t"
   }

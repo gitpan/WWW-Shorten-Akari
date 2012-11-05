@@ -5,18 +5,37 @@ use utf8;
 
 package WWW::Shorten::Akari;
 {
-  $WWW::Shorten::Akari::VERSION = 'v0.1';
+  $WWW::Shorten::Akari::VERSION = 'v0.2';
 }
 # ABSTRACT: Reduces the presence of URLs using http://waa.ai
 
 
-use base qw{WWW::Shorten::generic Exporter};
-our @EXPORT = qw{makeashorterlink makealongerlink};
+use parent qw{Exporter WWW::Shorten::generic};
+# must be exported by default; part of WWW::Shorten API
+our @EXPORT      = qw{makeashorterlink makealongerlink};
+our @EXPORT_OK   = qw{short_link long_link};
+our %EXPORT_TAGS = (
+    # not redundant; ":default" is part of the WWW::Shorten::generic import API
+    default => [@EXPORT],
+    short   => [@EXPORT_OK],
+);
+
+# Workaround for `use WWW::Shorten 'Akari'`.
+# Similar to the hack used within WWW::Shorten::generic with their
+# custom-implemented `import` method that doesn't respect empty
+# import lists.
+sub import {
+    my ($package) = caller;
+    __PACKAGE__->export_to_level(
+        $package eq 'WWW::Shorten' ? 2 : 1,
+        @_);
+}
 
 use constant API_URL => q{http://waa.ai/api.php};
 
 use Carp;
 use Encode qw{};
+use Scalar::Util qw{blessed};
 
 sub new {
     my $class = shift;
@@ -61,11 +80,6 @@ sub shorten {
     return $self->reduce(@args);
 }
 
-sub short_link {
-    my ($self, @args) = @_;
-    return $self->reduce(@args);
-}
-
 sub increase {
     my ($self, $url) = @_;
     unless ($url) {
@@ -92,24 +106,34 @@ sub lenghten {
     return $self->increase(@args);
 }
 
-sub long_link {
-    my ($self, @args) = @_;
-    return $self->increase(@args);
-}
-
 sub extract {
     my ($self, @args) = @_;
     return $self->increase(@args);
 }
 
+# Used by the functions when called as functions
 my $presence = WWW::Shorten::Akari->new;
 
+# Aliases to reduce when called as method; calls reduce on $presence when called as function
 sub makeashorterlink($) {
-    return $presence->reduce(@_);
+    my $self = shift;
+    return $self->reduce(shift) if blessed($self) && $self->isa(__PACKAGE__);
+    return $presence->reduce($self);
 }
 
+# Aliases to increase when called as method; calls increase on $presence when called as function
 sub makealongerlink($) {
-    return $presence->increase(@_);
+    my $self = shift;
+    return $self->increase(shift) if blessed($self) && $self->isa(__PACKAGE__);
+    return $presence->increase($self);
+}
+
+sub short_link($) { # merely redirects call, thus ignores prototypes
+    return &makeashorterlink(@_);
+}
+
+sub long_link($) { # merely redirects call, thus ignores prototypes
+    return &makealongerlink(@_);
 }
 
 1;
@@ -124,7 +148,7 @@ WWW::Shorten::Akari - Reduces the presence of URLs using http://waa.ai
 
 =head1 VERSION
 
-version v0.1
+version v0.2
 
 =head1 SYNOPSIS
 
@@ -134,8 +158,8 @@ version v0.1
     my $short = $presence->reduce("http://google.com");
     my $long  = $presence->increase($short);
 
-    $short = makeashortlink("http://google.com");
-    $long  = makealonglink($short);
+    $short = makeashorterlink("http://google.com");
+    $long  = makealongerlink($short);
 
 =head1 DESCRIPTION
 
@@ -157,7 +181,7 @@ Reduces the presence of the C<$url>. Returns the shortened URL.
 
 On failure, or if C<$url> is false, C<carp>s and returns false.
 
-Aliases: C<shorten>, C<short_link>
+Aliases: C<shorten>, C<short_link>, C<makeashorterlink>
 
 =head2 increase($url)
 
@@ -167,7 +191,20 @@ On failure, or if C<$url> is false, or if the C<$url> isn't
 a shortened link from L<http://waa.ai>, C<carp>s and returns
 false.
 
-Aliases: C<lenghten>, C<long_link>, C<extract>
+Aliases: C<lenghten>, C<long_link>, C<extract>, C<makealongerlink>
+
+=head1 NOTES
+
+WWW::Shorten::Akari should preferrably be C<use>d with an empty list
+as arguments, like C<use WWW::Shorten::Akari qw{};>, and then used
+through the OO API.
+
+If no arguments are given to C<use>, WWW::Shorten::Akari is imported with
+':default' by default, which imports C<makeashorterlink> and
+C<makealongerlink> as per WWW::Shorten conventions. If the module is C<use>d
+with ':short', the functions C<short_link> and C<long_link> are imported.
+
+=for Pod::Coverage import
 
 =for Pod::Coverage shorten short_link
 
@@ -177,16 +214,20 @@ Aliases: C<lenghten>, C<long_link>, C<extract>
 
 =head2 makeashorterlink($url)
 
-L<Makes a shorter link|http://tvtropes.org/pmwiki/pmwiki.php/Main/ExactlyWhatItSaysOnTheTin>
+L<Makes a shorter link|http://tvtropes.org/pmwiki/pmwiki.php/Main/ExactlyWhatItSaysOnTheTin>.
+
+Alias: C<short_link>
 
 =head2 makealongerlink($url)
 
 L<The opposite of|http://tvtropes.org/pmwiki/pmwiki.php/Main/CaptainObvious>
-L</makeashorterlink($url)>
+L</makeashorterlink($url)>.
+
+Alias: C<long_link>
 
 =head1 SOURCE CODE
 
-https://github.com/Kovensky/WWW-Shorten-Akari
+L<https://github.com/Kovensky/WWW-Shorten-Akari>
 
 =head1 AUTHOR
 

@@ -27,14 +27,15 @@ my %WriteMakefileArgs = (
     "Carp" => 0,
     "Encode" => 0,
     "Exporter" => 0,
+    "Scalar::Util" => 0,
     "WWW::Shorten::generic" => 0,
-    "base" => 0,
     "constant" => 0,
+    "parent" => 0,
     "strict" => 0,
     "utf8" => 0,
     "warnings" => 0
   },
-  "VERSION" => "v0.1",
+  "VERSION" => "v0.2",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -4,10 +4,8 @@ use warnings;
 use utf8;
 
 package WWW::Shorten::Akari;
-{
-  $WWW::Shorten::Akari::VERSION = 'v1.1.0';
-}
 # ABSTRACT: Reduces the presence of URLs using http://waa.ai
+our $VERSION = 'v1.2.1'; # VERSION
 
 
 use parent qw{Exporter WWW::Shorten::generic};
@@ -31,7 +29,7 @@ sub import {
         @_);
 }
 
-use constant API_URL => q{http://waa.ai/api.php};
+use constant API_URL => q{http://api.waa.ai/};
 
 use Carp;
 use Encode qw{};
@@ -101,6 +99,11 @@ sub _check_url {
     return scalar $url =~ m{^http://waa\.ai/[^.]+$};
 }
 
+sub unshorten {
+    my ($self, @args) = @_;
+    return $self->increase(@args);
+}
+
 sub lengthen {
     my ($self, @args) = @_;
     return $self->increase(@args);
@@ -151,13 +154,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 WWW::Shorten::Akari - Reduces the presence of URLs using http://waa.ai
 
 =head1 VERSION
 
-version v1.1.0
+version v1.2.1
 
 =head1 SYNOPSIS
 
@@ -200,7 +205,7 @@ On failure, or if C<$url> is false, or if the C<$url> isn't
 a shortened link from L<http://waa.ai>, C<carp>s and returns
 false.
 
-Aliases: C<lengthen>, C<long_link>, C<extract>, C<makealongerlink>
+Aliases: C<unshorten>, C<lengthen>, C<long_link>, C<extract>, C<makealongerlink>
 
 =head1 NOTES
 
@@ -217,7 +222,7 @@ with ':short', the functions C<short_link> and C<long_link> are imported.
 
 =for Pod::Coverage shorten short_link
 
-=for Pod::Coverage lengthen long_link extract
+=for Pod::Coverage unshorten lengthen long_link extract
 
 =for Pod::Coverage lenghten
 
